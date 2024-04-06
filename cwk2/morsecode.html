@@ -1,0 +1,113 @@
+<html>
+
+<head>
+  <title>Morse Code</title>
+  <script>
+
+    function encdec() {
+      let str = document.getElementById("input").value;
+      let str2=[];
+      let operation = document.getElementById("operation").value;
+      var answer='';
+      var letter='';
+
+      const mcode = {
+        'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+        'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+        'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+        'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+        'Y': '-.--', 'Z': '--..', ' ': ' ', '0': '-----',
+        '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+        '6': '-....', '7': '--...', '8': '---..', '9': '----.',
+        '&': '.-...', "'": '.----.', '@': '.--.-.', ')': '-.--.-', '(': '-.--.',
+        ':': '---...', ',': '--..--', '=': '-...-', '!': '-.-.--', '.': '.-.-.-',
+        '-': '-....-', '+': '.-.-.', '"': '.-..-.', '?': '..--..', '/': '-..-.'
+      }
+      if(operation=='enc'){
+        for (let i = 0; i < str.length; i++) {
+          if (str[i] != str[i].toUpperCase() && isLetter(str[i])) {
+            str2[i] = str[i].toUpperCase();
+          }
+          else{
+            str2[i]=str[i];
+          }
+          if(str2[i] in mcode){
+            answer=answer+mcode[str2[i]];
+
+            if(i!=str.length-1 && mcode[str2[i]]!=' ' ){
+              answer=answer+' ';
+            }
+
+          }
+          else{
+            alert('Invalid input');
+            answer='';
+            break;
+          }
+        }
+      }
+      if(operation=='dec'){
+        for(i=0;i<str.length;i++){
+          if(str[i]==' ' || ((str[i]=='.' || str[i]=='-')&& i==str.length-1)){
+            if((str[i]=='.' || str[i]=='-')&& i==str.length-1){
+              letter+=str[i];
+            }
+            if(Object.keys(mcode).find(key =>mcode[key] === letter) != null && Object.keys(mcode).find(key =>mcode[key] === letter)!=' '){
+              answer+=Object.keys(mcode).find(key =>mcode[key] === letter);
+            }
+            if(i!=str.length-1){
+              if(str[i+1]==' '){
+                answer+=' ';
+                i++;
+              }
+            }
+            letter='';
+          }
+          else if(str[i]=='.' || str[i]=='-'){
+            letter+=str[i];
+          }
+          else{
+            answer='';
+            alert('Invalid input');
+            break
+          }
+        }
+        }
+      
+      document.getElementById("output").innerHTML = answer;
+    }
+
+    function isLetter(str) {
+      return str.match(/[a-z]/i);
+    }
+  </script>
+</head>
+
+<body>
+  <H1>Morse code encoder/decoder</H1>
+  <h3>@author: Karl Samuel Kassis </h3>
+  <div>
+    <form>
+      <p> Enter a string</p>
+      <p> <textarea id="input" rows='5' cols='50'></textarea> </p>
+      <p>
+      <div id="optionloc" style="position:absolute; top:190px; left:240px;">
+        <select id="operation">
+          <option value="enc">Encode</option>
+          <option value="dec">Decode</option>
+        </select>
+      </div>
+      <div id="buttonloc" style="position:absolute; top:190px; left:320px;">
+        <button type="button" id="submit" onclick=encdec()>Submit</button>
+      </div>
+      </p>
+
+      <div>
+        <p>Encoded/decoded Morse code: </p>
+        <textarea id="output" rows='5' cols='50' readonly></textarea>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>
